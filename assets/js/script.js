@@ -50,7 +50,8 @@ $(function () {
     let status = "present";
     if (i < currentHour) status = "past";
     else if (i > currentHour) status = "future";
-    const time = (i % 12) + (i > 12 ? "PM" : "AM");
+    let time = (i % 12) + (i > 11 ? "PM" : "AM");
+    if (time == "0PM") time = "12PM";
     const hourEl = $(`
       <div id="hour-${i}" class="row time-block ${status}">
         <div class="col-2 col-md-1 hour text-center py-3">${time}</div>
