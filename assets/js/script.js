@@ -3,6 +3,10 @@
  */
 
 const baseHour = 9;
+/**
+ * @type {Object.<string,string>[]}
+ */
+const schedule = JSON.parse(localStorage.getItem("schedule")) || [];
 
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
@@ -18,8 +22,9 @@ $(function () {
   $(".time-block .saveBtn").on("click", (e) => {
     const parent = $(e.target).parent();
     const description = parent.children(".description").val();
-    const parentId = parent.attr("id");
-    alert(description);
+    const parentId = parseInt(parent.attr("id").split("hour-")[1]);
+    schedule[parentId - baseHour] = description;
+    localStorage.setItem("schedule", JSON.stringify(schedule));
   });
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
@@ -31,10 +36,6 @@ $(function () {
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
-  /**
-   * @type {Object.<string,string>[]}
-   */
-  const schedule = JSON.parse(localStorage.getItem("schedule")) || [];
   for (let i = 0; i < schedule.length; i++) {
     $(`#hour-${baseHour + i} .description`).val(schedule[i]);
   }
