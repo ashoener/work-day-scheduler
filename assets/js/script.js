@@ -18,6 +18,9 @@ const now = dayjs();
 // in the html.
 $(function () {
   const scheduleEl = $("#schedule");
+  const saveToast = new bootstrap.Toast(document.getElementById("save-toast"), {
+    delay: 3000,
+  });
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -26,13 +29,15 @@ $(function () {
   // useful when saving the description in local storage?
   //
   scheduleEl.on("click", (e) => {
-    const parent = $(e.target).parent();
-    if (!parent.is(".time-block")) return;
+    const target = $(e.target);
+    const parent = target.parent();
+    if (!target.is(".saveBtn") || !parent.is(".time-block")) return;
     const description = parent.children(".description").val();
     const parentId = parseInt(parent.attr("id").split("hour-")[1]);
     schedule[parentId - baseHour] = description;
     console.log(parentId - baseHour);
     localStorage.setItem("schedule", JSON.stringify(schedule));
+    saveToast.show();
   });
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
